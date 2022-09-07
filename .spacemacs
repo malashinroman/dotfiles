@@ -34,6 +34,7 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(javascript
      python
+     prettier
      (python:variables python-formatter 'black)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -609,15 +610,11 @@ before packages are loaded."
                 ))) 
 
 
-    ;; Spacemacs on Ubuntu 16.04 - automatically switch between English and Russian layouts on entering and exiting insert state
+    ;; Spacemacs on Ubuntu 20.04 - automatically switch between English and Russian layouts on entering and exiting insert state
+    ;; original source: https://gist.github.com/kai11/bb5c2fa03cb21884bfcb76c01d1632c9
     ;; "r" command will use English though
-    ;; Idea from https://github.com/syl20bnr/spacemacs/issues/3225
-    ;; exit hook below assumes your langunage #0 (first in Input Sources list) is English
-    ;; if it's not, change 0 to index of English
-
-    ;; (setq prev_lang (substring (shell-command-to-string
-    ;;   "gsettings get org.gnome.desktop.input-sources current")
-    ;;   7 -1))
+    ;; exit hook below assumes English is langunage #1 (second in Input Sources list)
+    ;; if it's not, change 1 to index of English (index can be obtained by 'running gdbus call ..')
 
     (setq prev_lang (substring (shell-command-to-string
                                 "gdbus call --session --dest org.gnome.Shell \
