@@ -32,23 +32,8 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(python
+   '(javascript
      python
-     python
-     pytho(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   '(pyenv-mode-auto blacken code-cells company-anaconda anaconda-mode counsel-gtags counsel swiper ivy cython-mode dap-mode lsp-docker bui ggtags helm-cscope helm-gtags helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms lsp-mode nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify evil-org gh-md git-link git-messenger git-modes git-timemachine gitignore-templates gnuplot helm-git-grep helm-ls-git helm-org-rifle htmlize markdown-toc mmm-mode org-cliplink org-contrib org-download org-mime org-pomodoro alert log4e gntp org-present org-projectile org-category-capture org-rich-yank orgit-forge orgit forge yaml markdown-mode ghub closql emacsql-sqlite emacsql treepy smeargle treemacs-magit magit magit-section git-commit with-editor transient ws-butler writeroom-mode winum which-key volatile-highlights vim-powerline vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay string-inflection string-edit spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav elisp-def editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-)
      (python:variables python-formatter 'black)
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -59,7 +44,6 @@ This function should only modify configuration layer settings."
      games
      slack
      search-engine
-     ;; prettier
      ;; better-defaults
      emacs-lisp
      git
@@ -69,6 +53,7 @@ This function should only modify configuration layer settings."
      multiple-cursors
      org
      dap
+     spacemacs-evil
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -86,7 +71,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-
+   ;; dotspacemacs-additional-packages '()
    ;; add copilot.el to additional packages
    dotspacemacs-additional-packages
    '((copilot :location (recipe
@@ -100,6 +85,7 @@ This function should only modify configuration layer settings."
    ;; A list of packages that will not be installed and loaded.
    dotspacemacs-excluded-packages '()
 
+   ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and deletes any unused
    ;; packages as well as their unused dependencies. `used-but-keep-unused'
@@ -585,33 +571,100 @@ dump."
 
 
 (defun dotspacemacs/user-config ()
-"Configuration for user code:
+  "Configuration for user code:
 This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
-;; accept completion from copilot and fallback to company
-(defun my-tab ()
-  (interactive)
-  (or (copilot-accept-completion)
-      (company-indent-or-complete-common nil)))
+  ;; accept completion from copilot and fallback to company
+  (defun my-tab ()
+    (interactive)
+    (or (copilot-accept-completion)
+        (company-indent-or-complete-common nil)))
 
-(with-eval-after-load 'company
-  ;; disable inline previews
-  (delq 'company-preview-if-just-one-frontend company-frontends)
-  ;; enable tab completion
-  (define-key company-mode-map (kbd "<tab>") 'my-tab)
-  (define-key company-mode-map (kbd "TAB") 'my-tab)
-  (define-key company-active-map (kbd "<tab>") 'my-tab)
-  (define-key company-active-map (kbd "TAB") 'my-tab))
+  (with-eval-after-load 'company
+    ;; disable inline previews
+    (delq 'company-preview-if-just-one-frontend company-frontends)
+    ;; enable tab completion
+    (define-key company-mode-map (kbd "<tab>") 'my-tab)
+    (define-key company-mode-map (kbd "TAB") 'my-tab)
+    (define-key company-active-map (kbd "<tab>") 'my-tab)
+    (define-key company-active-map (kbd "TAB") 'my-tab))
 
 
-(add-hook 'prog-mode-hook 'copilot-mode)
+  (add-hook 'prog-mode-hook 'copilot-mode)
 
-(define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
-(define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
-)
+  (define-key evil-insert-state-map (kbd "C-<tab>") 'copilot-accept-completion-by-word)
+  (define-key evil-insert-state-map (kbd "C-TAB") 'copilot-accept-completion-by-word)
 
+  (setq org-hide-emphasis-markers t)
+  (setq org-emphasis-alist   
+        (quote (("*" bold)
+                ("/" italic)
+                ("_" underline)
+                ("=" (:foreground "yellow" :background "black"))
+                ("~" org-verbatim verbatim)
+                ("+"
+                 (:strike-through t))
+                ))) 
+
+
+    ;; Spacemacs on Ubuntu 16.04 - automatically switch between English and Russian layouts on entering and exiting insert state
+    ;; "r" command will use English though
+    ;; Idea from https://github.com/syl20bnr/spacemacs/issues/3225
+    ;; exit hook below assumes your langunage #0 (first in Input Sources list) is English
+    ;; if it's not, change 0 to index of English
+
+    ;; (setq prev_lang (substring (shell-command-to-string
+    ;;   "gsettings get org.gnome.desktop.input-sources current")
+    ;;   7 -1))
+
+    (setq prev_lang (substring (shell-command-to-string
+                                "gdbus call --session --dest org.gnome.Shell \
+                                           --object-path /org/gnome/Shell \
+                                           --method org.gnome.Shell.Eval \
+                                           'imports.ui.status.keyboard.getInputSourceManager().currentSource.index'")
+                               -4 -3))
+    (add-hook 'evil-insert-state-entry-hook
+              (lambda ()
+                (message "prev_lang: %s" prev_lang)
+                (shell-command (concat
+                                (concat
+                                 "gdbus call --session --dest org.gnome.Shell \
+                                 --object-path /org/gnome/Shell \
+                                 --method org.gnome.Shell.Eval \
+                                 'imports.ui.status.keyboard.getInputSourceManager().inputSources[" prev_lang
+                                 ) "].activate()'"
+                               )
+                )
+              )
+    )
+    (add-hook 'evil-insert-state-exit-hook
+              (lambda ()
+                (setq prev_lang (substring (shell-command-to-string
+                                           "gdbus call --session --dest org.gnome.Shell \
+                                           --object-path /org/gnome/Shell \
+                                           --method org.gnome.Shell.Eval \
+                                           'imports.ui.status.keyboard.getInputSourceManager().currentSource.index'")
+                                           -4 -3))
+                (shell-command (concat
+                                "gdbus call --session --dest org.gnome.Shell \
+                                --object-path /org/gnome/Shell \
+                                --method org.gnome.Shell.Eval \
+                                'imports.ui.status.keyboard.getInputSourceManager().inputSources[1].activate()'"
+                                )
+                               )
+                )
+              )
+  )
+
+"gdbus call --session --dest org.gnome.Shell \
+                --object-path /org/gnome/Shell \
+                --method org.gnome.Shell.Eval \
+                'imports.ui.status.keyboard.getInputSourceManager().inputSources[1].activate()'"
+;; (setq (add-to-list 'org-emphasis-alist
+;;              '("*" (:foreground "red")
+;;                ))
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -620,4 +673,17 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(add-node-modules-path impatient-mode import-js grizzl js-doc js2-refactor multiple-cursors livid-mode nodejs-repl npm-mode prettier-js skewer-mode js2-mode simple-httpd tern web-beautify blacken code-cells company-anaconda anaconda-mode counsel-gtags counsel swiper ivy cython-mode ggtags helm-cscope helm-gtags helm-pydoc importmagic epc ctable concurrent deferred live-py-mode lsp-pyright lsp-python-ms nose pip-requirements pipenv load-env-vars pippel poetry py-isort pydoc pyenv-mode pythonic pylookup pytest pyvenv sphinx-doc stickyfunc-enhance xcscope yapfify yasnippet-snippets ws-butler writeroom-mode winum which-key volatile-highlights vim-powerline vi-tilde-fringe uuidgen use-package undo-tree typit treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil toc-org term-cursor symon symbol-overlay sudoku string-inflection string-edit spacemacs-whitespace-cleanup spacemacs-purpose-popwin spaceline-all-the-icons space-doc smeargle slack restart-emacs rainbow-delimiters quickrun popwin pcre2el password-generator paradox pacmacs overseer orgit-forge org-superstar org-rich-yank org-projectile org-present org-pomodoro org-mime org-download org-contrib org-cliplink open-junk-file nameless multi-line mmm-mode markdown-toc macrostep lsp-ui lsp-origami lorem-ipsum link-hint inspector info+ indent-guide hybrid-mode hungry-delete htmlize holy-mode hl-todo highlight-parentheses highlight-numbers highlight-indentation hide-comnt help-fns+ helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org-rifle helm-org helm-mode-manager helm-make helm-lsp helm-ls-git helm-git-grep helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitignore-templates git-timemachine git-modes git-messenger git-link gh-md fuzzy font-lock+ flycheck-pos-tip flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-org evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-evilified-state evil-escape evil-ediff evil-easymotion evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu engine-mode emr emoji-cheat-sheet-plus elisp-slime-nav elisp-def dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish devdocs define-word dap-mode copilot company-emoji column-enforce-mode clean-aindent-mode centered-cursor-mode auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell 2048-game)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
+)
