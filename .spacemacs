@@ -34,6 +34,10 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    '(javascript
      python
+     org
+     bibtex
+     pdf
+     latex
      prettier
      (python:variables python-formatter 'black)
      ;; ----------------------------------------------------------------
@@ -52,7 +56,6 @@ This function should only modify configuration layer settings."
      lsp
      markdown
      multiple-cursors
-     org
      dap
      spacemacs-evil
      ;; (shell :variables
@@ -653,6 +656,19 @@ before packages are loaded."
                                )
                 )
               )
+    (setq latex-view-pdf-in-split-window t)
+    (setq latex-refresh-preview t)
+    (setq package-check-signature nil)
+    (setq bibtex-completion-bibliography '("~/Papers/references.bib")
+          bibtex-completion-library-path "~/Papers/"
+          bibtex-completion-notes-path "~/Papers/notes.org")
+    ;; (setq (plist-put org-format-latex-options :scale 2.0))
+    (with-eval-after-load 'org
+      (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+      (setq org-format-latex-options (plist-put org-format-latex-options :foreground "White"))
+    )
+    ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
   )
 
 "gdbus call --session --dest org.gnome.Shell \
