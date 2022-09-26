@@ -664,7 +664,7 @@ before packages are loaded."
           bibtex-completion-notes-path "~/Papers/notes.org")
     ;; (setq (plist-put org-format-latex-options :scale 2.0))
     (with-eval-after-load 'org
-      (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
       (setq org-format-latex-options (plist-put org-format-latex-options :foreground "White"))
     )
     ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
