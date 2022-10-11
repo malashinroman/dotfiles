@@ -33,38 +33,31 @@ This function should only modify configuration layer settings."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(javascript
-     python
-     org
-     bibtex
-     pdf
-     latex
-     prettier
-     (python:variables python-formatter 'black)
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      auto-completion
-     games
-     slack
-     search-engine
-     ;; better-defaults
+     bibtex
      emacs-lisp
+     games
      git
      helm
+     latex
      lsp
      markdown
      multiple-cursors
-     dap
+     org
+     pandoc
+     pdf
+     prettier
+     python
+     search-engine
+     slack
      spacemacs-evil
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
-     ;; version-control
-     treemacs)
+     spell-checking
+     syntax-checking
+     treemacs
+     version-control
+     (python:variables python-formatter 'black)
+     (latex :variables latex-refresh-preview t)
+     )
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -255,7 +248,8 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(spacemacs-dark
-                         spacemacs-light)
+                         spacemacs-light
+                         adwaita)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -667,6 +661,15 @@ before packages are loaded."
       (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
       (setq org-format-latex-options (plist-put org-format-latex-options :foreground "White"))
     )
+    (with-eval-after-load "ispell"
+      (setq ispell-program-name "hunspell")
+      ;; ispell-set-spellchecker-params has to be called
+      ;; before ispell-hunspell-add-multi-dic will work
+      (ispell-set-spellchecker-params)
+      (ispell-hunspell-add-multi-dic "ru_RU,en_US")
+      (setq ispell-dictionary "ru_RU,en_US"))
+    (setq-default dotspacemacs-configuration-layers
+                  '((spell-checking :variables enable-flyspell-auto-completion t)))
     ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
   )
