@@ -32,14 +32,19 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(javascript
+   '(html
+     lua
+     python
+     javascript
      auto-completion
      bibtex
+     dap
      emacs-lisp
      games
      git
      helm
      latex
+     spacemacs-language
      lsp
      markdown
      multiple-cursors
@@ -55,9 +60,10 @@ This function should only modify configuration layer settings."
      syntax-checking
      treemacs
      version-control
-     (python:variables python-formatter 'black)
+     (python :variables python-formatter 'black)
      (latex :variables latex-refresh-preview t)
-     )
+     (python :variables python-backend 'lsp python-lsp-server 'pyright))
+
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -565,6 +571,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
+  (require('dap-python))
 )
 
 
@@ -659,7 +666,7 @@ before packages are loaded."
     ;; (setq (plist-put org-format-latex-options :scale 2.0))
     (with-eval-after-load 'org
       (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-      (setq org-format-latex-options (plist-put org-format-latex-options :foreground "White"))
+      (setq org-format-latex-options (plist-put org-format-latex-options :foreground "Gray"))
     )
     (with-eval-after-load "ispell"
       (setq ispell-program-name "hunspell")
@@ -671,7 +678,8 @@ before packages are loaded."
     (setq-default dotspacemacs-configuration-layers
                   '((spell-checking :variables enable-flyspell-auto-completion t)))
     ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-
+    ;; test_me_here please_you
+    (modify-syntax-entry ?_ "w")
   )
 
 "gdbus call --session --dest org.gnome.Shell \
