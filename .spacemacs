@@ -32,10 +32,7 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
-   '(html
-     lua
-     python
-     javascript
+   '(
      auto-completion
      bibtex
      dap
@@ -43,9 +40,11 @@ This function should only modify configuration layer settings."
      games
      git
      helm
+     html
+     javascript
      latex
-     spacemacs-language
      lsp
+     lua
      markdown
      multiple-cursors
      org
@@ -53,16 +52,19 @@ This function should only modify configuration layer settings."
      pdf
      prettier
      python
+     python
      search-engine
      slack
      spacemacs-evil
+     spacemacs-language
      spell-checking
      syntax-checking
      treemacs
      version-control
      (python :variables python-formatter 'black)
      (latex :variables latex-refresh-preview t)
-     (python :variables python-backend 'lsp python-lsp-server 'pyright))
+     (python :variables python-backend 'lsp python-lsp-server 'pyright)
+     )
 
 
 
