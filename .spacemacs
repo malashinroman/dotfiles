@@ -64,10 +64,13 @@ This function should only modify configuration layer settings."
      (python :variables python-formatter 'black)
      (latex :variables latex-refresh-preview t)
      (python :variables python-backend 'lsp python-lsp-server 'pyright)
+     (bibtex :variables
+             bibtex-enable-ebib-support t
+             ebib-preload-bib-files '("~/Papers/references.bib")
+             ebib-file-search-dirs '("~/Papers")
+             ebib-import-directory '("~/Downloads")
+             )
      )
-
-
-
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
    ;; loaded using load/require/use-package in the user-config section below in
@@ -578,6 +581,11 @@ dump."
 
 
 (defun dotspacemacs/user-config ()
+  ;; (setq org-latex-pdf-process (list
+  ;;                              "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+  (setq bibtex-completion-bibliography '("~/Papers/references.bib")
+        bibtex-completion-library-path "~/Papers/"
+        bibtex-completion-notes-path "~/Papers/notes.org")
   "Configuration for user code:
 This function is called at the very end of Spacemacs startup, after layer
 configuration.
@@ -598,6 +606,9 @@ before packages are loaded."
     (define-key company-active-map (kbd "<tab>") 'my-tab)
     (define-key company-active-map (kbd "TAB") 'my-tab))
 
+  ;; (use-package reftex
+  ;;   :ensure auctex
+  ;;   :after latex)
 
   (add-hook 'prog-mode-hook 'copilot-mode)
 
@@ -682,6 +693,11 @@ before packages are loaded."
     ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
     ;; test_me_here please_you
     (modify-syntax-entry ?_ "w")
+    (setq reftex-default-bibliography '("~/Papers/references.bib"))
+    '(reftex-use-external-file-finders t)
+    (setq org-latex-pdf-process 
+          '("latexmk -pdflatex='pdflatex -interaction nonstopmode' -pdf -bibtex -f %f"))
+    '(require 'org-ref-natbib-bbl-citeproc)
   )
 
 "gdbus call --session --dest org.gnome.Shell \
